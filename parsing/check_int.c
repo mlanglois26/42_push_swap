@@ -6,7 +6,7 @@
 /*   By: malanglo <malanglo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:05:57 by malanglo          #+#    #+#             */
-/*   Updated: 2024/02/07 12:25:01 by malanglo         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:38:17 by malanglo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 int	is_overflow(long final_result)
 {
-	double	d;
-
-	d = 18446744073709551615.0;
-	if (final_result >= (long)d)
-		return (1);
 	if (final_result < -2147483648 || final_result > 2147483647)
 		return (1);
 	return (0);
@@ -27,7 +22,6 @@ int	is_overflow(long final_result)
 long	ft_atol_and_check(char *nptr)
 {
 	long	res;
-	long	final_result;
 	int		sign;
 	int		i;
 
@@ -44,13 +38,14 @@ long	ft_atol_and_check(char *nptr)
 	}
 	while ((nptr[i] >= '0' && nptr[i] <= '9'))
 	{
+		if (is_overflow(sign * res))
+			return (2000000000000000);
 		res = res * 10 + (nptr[i] - '0');
 		i++;
 	}
-	final_result = sign * res;
-	if (is_overflow(final_result))
+	if (is_overflow((double)(res)*sign))
 		return (2000000000000000);
-	return (final_result);
+	return (res * sign);
 }
 
 int	has_duplicate(int *data, int size)
